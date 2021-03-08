@@ -11,6 +11,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         amount =  options['amount']
         print(f'Creating {amount} test entries')
-        entries = baker.make("apps.main.Entry", _quantity=amount)
+        entries = baker.make("main.Entry", _quantity=amount)
         assert len(entries) == amount
         print(f'{len(entries)} test entries created')
