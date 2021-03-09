@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import { Button } from 'reactstrap';
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      entries: [],
-      loaded: false,
-      placeholder: "Loading"
-    };
-  }
+  state = {
+    entries: [],
+    loaded: false,
+    placeholder: "Loading"
+  };
 
-  componentDidMount() {
+  fetchEntries = () => {
     fetch("api/entries")
       .then(response => {
         if (response.status > 400) {
@@ -32,17 +30,26 @@ class App extends Component {
       });
   }
 
-  render() {
+  componentDidMount = () => {
+    this.fetchEntries();
+  }
+
+  render = () => {
     return (
-      <ul>
-        {this.state.entries.map(entry => {
-          return (
-            <li key={entry.id}>
-              {entry.text} - {entry.number}
-            </li>
-          );
-        })}
-      </ul>
+      <div>
+        <ul>
+          {this.state.entries.map(entry => {
+            return (
+              <li key={entry.id}>
+                {entry.text} - {entry.number}
+              </li>
+            );
+          })}
+        </ul>
+        <div>
+          <Button color="danger" onClick={this.fetchEntries}>Refresh!</Button>
+        </div>
+      </div>
     );
   }
 }
