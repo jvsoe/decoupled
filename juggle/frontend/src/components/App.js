@@ -1,12 +1,14 @@
+'use strict';
 import React, { Component } from "react";
 import { render } from "react-dom";
-import Entries from './Entries'
+import EntryTable from './EntryTable'
 import Navbaren from './Navbar.js'
 
 
 class App extends Component {
   state = {
     entries: [],
+    entryDefinition: [],
     loaded: false,
     placeholder: "Loading"
   };
@@ -27,13 +29,13 @@ class App extends Component {
           <Navbaren />
         </div>
         <div className="entries-wrap">
-          <Entries setAppState={this.updateStateFromChild} state={this.state} />
+          <EntryTable setAppState={this.updateStateFromChild} state={this.state} />
         </div>
       </div>
     );
   }
 }
-// <Entries set_app_state={this.setState} parent_state={this.state} />
+
 export default App;
 
 const container = document.getElementById("app");

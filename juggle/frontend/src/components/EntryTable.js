@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { Button } from 'reactstrap';
+import SmartDataTable from 'react-smart-data-table'
 
-class Entries extends Component {
+import Entry from './Entry.js'
+
+
+class EntryTable extends Component {
   fetchEntries = () => {
     fetch("api/entries")
       .then(response => {
@@ -13,9 +17,9 @@ class Entries extends Component {
         return response.json();
       })
       .then(entries => {
-//        this.props.setAppState({
         this.props.setAppState({
-          entries: entries,
+          entries: entries.entries,
+          entryDefinition: entries.fields_to_names,
           loaded: true
         })
       });
@@ -25,23 +29,21 @@ class Entries extends Component {
   }
 
   render = () => {
+    console.log('this.props.state.entries', this.props.state.entries)
     return (
       <div>
-        <ul>
-          {this.props.state.entries.map(entry => {
-            return (
-              <li key={entry.id}>
-                {entry.text} - {entry.number}
-              </li>
-            );
-          })}
-        </ul>
-        <div>
-          <Button color="danger" onClick={this.fetchEntries}>Refresh!</Button>
+        <div className="the-table">
+          <SmartDataTable
+            data={this.props.state.entries}
+            name="test-table"
+            className="ui compact selectable table"
+            sortable
+          />
         </div>
+        <Button color="danger" onClick={this.fetchEntries}>Refresh!</Button>
       </div>
     );
   }
 }
 
-export default Entries;
+export default EntryTable;

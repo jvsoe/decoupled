@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 
 
 # Create your views here.
-from typing import List
+from typing import List, Dict
 from ninja import NinjaAPI, Schema
 from ninja.security import django_auth
 
@@ -23,10 +23,17 @@ EntryIn = create_schema(Entry,
     fields=['text', 'number']
 )
 
+
 EntryOut = create_schema(Entry,
     name='EntryOut'
-    # depth=0
 )
+
+
+class Entries(Schema):
+    # name: 'Entries'
+    entries: List[EntryOut]
+    fields_to_names: List[Dict] # Dict
+
 
 UserOut = create_schema(
     User,
@@ -36,10 +43,25 @@ UserOut = create_schema(
 )
 
 
-@ninja_api.get("/entries", response=List[EntryOut])
+@ninja_api.get("/entry_table_def")
+def entry_schema(request):
+    model = EntryOut.schema()
+    fields_to_names = {field: meta['title'] for field, meta in model['properties'].items()}
+    return fields_to_names
+
+@ninja_api.get("/entries", response=Entries)
 def entries(request):
-    qs = Entry.objects.all()
-    return qs
+    model = EntryOut.schema()
+    # fields_to_names = {field: meta['title'] for field, meta in model['properties'].items()}
+    columns = []
+    for field, meta in model['properties'].items():
+        columns.append({'Header': meta['title'], 'accessor': field})
+    entries = Entries(
+        entries=list(Entry.objects.order_by('-id')),
+        # fields_to_names=fields_to_names
+        fields_to_names=columns
+    )
+    return entries
 
 @ninja_api.get("/users", response=List[UserOut])
 def users(request):
@@ -49,7 +71,11 @@ def users(request):
 
 @ninja_api.post("/entries", response=EntryOut)
 def entry(request, payload: EntryIn):
+    # Creation
     obj = Entry.objects.create(**payload.dict())
+    # Deletion
+    last_50_ids = Entry.objects.order_by('-created_at')[:50].values_list('id')
+    print(Entry.objects.exclude(pk__in=last_50_ids).delete())
     return obj
 
 
