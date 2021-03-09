@@ -17,10 +17,12 @@ from ninja.orm import create_schema
 ninja_api = NinjaAPI()
 
 EntryIn = create_schema(Entry,
+    name='EntryIn',
     fields=['text', 'number']
 )
 
 EntryOut = create_schema(Entry,
+    name='EntryOut'
     # fields=['id', 'text', 'number', 'created_at'],
     # depth=0
 )
