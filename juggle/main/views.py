@@ -55,10 +55,14 @@ def entry(request, entry_id: int, payload: EntryIn):
 @ninja_api.api_operation(['GET', 'DELETE'], "/entries/{entry_id}", response=EntryOut)
 def entry(request, entry_id: int):
     entry = get_object_or_404(Entry, id=entry_id)
-    match request.method:
-        case 'GET':
-            return entry
-        case 'DELETE':
-            entry.delete()
-            return entry
-
+    # match request.method:
+    #     case 'GET':
+    #         return entry
+    #     case 'DELETE':
+    #         entry.delete()
+    #         return entry
+    if request.method == 'GET':
+        return entry
+    elif request.method == 'DELETE':
+        entry.delete()
+        return entry
