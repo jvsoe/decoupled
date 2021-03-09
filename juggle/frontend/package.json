@@ -11,6 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.6.0",
+    "css-loader": "^5.1.1",
+    "reactstrap": "^8.9.0",
+    "style-loader": "^2.0.0",
     "webpack": "^5.24.4",
     "webpack-cli": "^4.5.0"
   },
