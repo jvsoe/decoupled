@@ -8,3 +8,5 @@ class Entry(models.Model):
     text = models.CharField(max_length=255, default='')
     number = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.text}: {self.number}'

@@ -4,5 +4,5 @@ from django.db import models
 # Create your models here.
 
 class User(AbstractUser):
-    pass
+    entries = models.ManyToManyField('main.Entry', blank=True)
 

@@ -8,13 +8,15 @@ from django.shortcuts import render, get_object_or_404
 from typing import List
 from ninja import NinjaAPI, Schema
 from ninja.security import django_auth
+
+from users.models import User
 from .models import Entry
 
 from ninja.orm import create_schema
 
 
 # ninja_api = NinjaAPI(auth=django_auth, csrf=True)
-ninja_api = NinjaAPI()
+ninja_api = NinjaAPI(title="Entry API")
 
 EntryIn = create_schema(Entry,
     name='EntryIn',
@@ -23,19 +25,25 @@ EntryIn = create_schema(Entry,
 
 EntryOut = create_schema(Entry,
     name='EntryOut'
-    # fields=['id', 'text', 'number', 'created_at'],
     # depth=0
 )
 
-
-@ninja_api.get("/add")
-def add(request, a: int, b: int):
-    return {"result": a + b}
+UserOut = create_schema(
+    User,
+    name='UserOut',
+    fields=['first_name', 'entries'],
+    depth=1
+)
 
 
 @ninja_api.get("/entries", response=List[EntryOut])
-def list_employees(request):
+def entries(request):
     qs = Entry.objects.all()
+    return qs
+
+@ninja_api.get("/users", response=List[UserOut])
+def users(request):
+    qs = User.objects.all()
     return qs
 
 
