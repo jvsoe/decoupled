@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import { Button } from 'reactstrap';
+import Entries from './Entries'
+//import { Navbar } from 'Navbar.js'
 
 
 class App extends Component {
@@ -10,50 +11,24 @@ class App extends Component {
     placeholder: "Loading"
   };
 
-  fetchEntries = () => {
-    fetch("api/entries")
-      .then(response => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
-      .then(entries => {
-        this.setState(() => {
-          return {
-            entries,
-            loaded: true
-          };
-        });
-      });
-  }
-
-  componentDidMount = () => {
-    this.fetchEntries();
+  updateStateFromChild = (json) => {
+    this.setState(json);
   }
 
   render = () => {
     return (
-      <div>
-        <ul>
-          {this.state.entries.map(entry => {
-            return (
-              <li key={entry.id}>
-                {entry.text} - {entry.number}
-              </li>
-            );
-          })}
-        </ul>
-        <div>
-          <Button color="danger" onClick={this.fetchEntries}>Refresh!</Button>
+      <div className="app-wrap">
+        <div className="entries-wrap">
+          <span></span>
+        </div>
+        <div className="entries-wrap">
+          <Entries setAppState={this.updateStateFromChild} entries={this.state.entries} />
         </div>
       </div>
     );
   }
 }
-
+// <Entries set_app_state={this.setState} parent_state={this.state} />
 export default App;
 
 const container = document.getElementById("app");
