@@ -13,6 +13,7 @@ class Entries extends Component {
         return response.json();
       })
       .then(entries => {
+//        this.props.setAppState({
         this.props.setAppState({
           entries: entries,
           loaded: true
@@ -27,7 +28,7 @@ class Entries extends Component {
     return (
       <div>
         <ul>
-          {this.props.entries.map(entry => {
+          {this.props.state.entries.map(entry => {
             return (
               <li key={entry.id}>
                 {entry.text} - {entry.number}

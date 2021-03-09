@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import Entries from './Entries'
-//import { Navbar } from 'Navbar.js'
+import Navbaren from './Navbar.js'
 
 
 class App extends Component {
@@ -11,6 +11,11 @@ class App extends Component {
     placeholder: "Loading"
   };
 
+//  appControl = () => {
+//    state = this.state
+//    setState = this.setState
+//  }
+
   updateStateFromChild = (json) => {
     this.setState(json);
   }
@@ -19,10 +24,10 @@ class App extends Component {
     return (
       <div className="app-wrap">
         <div className="entries-wrap">
-          <span></span>
+          <Navbaren />
         </div>
         <div className="entries-wrap">
-          <Entries setAppState={this.updateStateFromChild} entries={this.state.entries} />
+          <Entries setAppState={this.updateStateFromChild} state={this.state} />
         </div>
       </div>
     );
