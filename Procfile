@@ -1,2 +1,2 @@
 web: gunicorn juggle.wsgi
-release: python manage.py migrate
+release: python juggle/manage.py migrate
