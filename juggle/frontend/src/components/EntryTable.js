@@ -37,6 +37,7 @@ class EntryTable extends Component {
             data={this.props.state.entries}
             name="test-table"
             className="ui compact selectable table"
+            {...this.props.state.tableParams}
             sortable
           />
         </div>

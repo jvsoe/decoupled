@@ -9,6 +9,7 @@ class App extends Component {
   state = {
     entries: [],
     entryDefinition: [],
+    tableParams: {},
     loaded: false,
     placeholder: "Loading"
   };
