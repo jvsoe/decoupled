@@ -6,7 +6,7 @@ The frontend is served directly through Django as a compiled React project
 
 
 ## Entries
-An entry is a Django model with arbitrary fields like `text` and `number`. 
+An Entry is a Django model with arbitrary fields like `text` and `number`. 
 The app contains a table of all entries in the database.
 
 ## API
