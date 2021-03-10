@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from 'reactstrap';
 import SmartDataTable from 'react-smart-data-table'
 
-import Entry from './Entry.js'
+import EntryForm from './EntryForm.js'
 
 
 class EntryTable extends Component {
@@ -19,7 +19,8 @@ class EntryTable extends Component {
       .then(entries => {
         this.props.setAppState({
           entries: entries.entries,
-          entryDefinition: entries.fields_to_names,
+          entryDefinition: entries.columns,
+          entryFormDefinition: entries.entry_form_fields,
           loaded: true
         })
       });
@@ -28,10 +29,23 @@ class EntryTable extends Component {
     this.fetchEntries();
   }
 
+//  const onRowClick = (event, { rowData, rowIndex, tableData }) => {
+//    // The following results should be identical
+//    console.log(rowData, tableData[rowIndex])
+//  }
+
   render = () => {
     console.log('this.props.state.entries', this.props.state.entries)
     return (
       <div>
+        <div className="form-wrap">
+          <EntryForm
+            state={this.props.state}
+            submitFunc={this.fetchEntries}
+            setAppState={this.props.setAppState}
+            settings={this.props.settings} />
+        </div>
+        <br></br>
         <div className="the-table">
           <SmartDataTable
             data={this.props.state.entries}

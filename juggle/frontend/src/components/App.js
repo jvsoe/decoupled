@@ -1,18 +1,24 @@
 'use strict';
 import React, { Component } from "react";
 import { render } from "react-dom";
-import EntryTable from './EntryTable'
-import Navbaren from './Navbar.js'
+import EntryTable from './EntryTable';
+import Navbaren from './Navbar.js';
+import EntryForm from './EntryForm.js';
 
 
 class App extends Component {
   state = {
     entries: [],
-    entryDefinition: [],
+    entryFormData: {},
+    entryDefinition: [], // Columns - not used
+    entryFormDefinition: {},
     tableParams: {},
     loaded: false,
     placeholder: "Loading"
   };
+  settings = {
+    entryFormId: 'entry-form',
+  }
 
 //  appControl = () => {
 //    state = this.state
@@ -25,12 +31,12 @@ class App extends Component {
 
   render = () => {
     return (
-      <div className="app-wrap">
-        <div className="entries-wrap">
+      <div className="app-wrap" style={{padding: "5px"}}>
+        <div className="navbar-wrap">
           <Navbaren />
         </div>
-        <div className="entries-wrap">
-          <EntryTable setAppState={this.updateStateFromChild} state={this.state} />
+        <div className="entries-wrap" style={{padding: "5px"}}>
+          <EntryTable setAppState={this.updateStateFromChild} state={this.state} settings={this.settings}/>
         </div>
       </div>
     );

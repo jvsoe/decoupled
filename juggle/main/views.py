@@ -32,7 +32,8 @@ EntryOut = create_schema(Entry,
 class Entries(Schema):
     # name: 'Entries'
     entries: List[EntryOut]
-    fields_to_names: List[Dict] # Dict
+    columns: List[Dict]  # Dict
+    entry_form_fields: Dict
 
 
 UserOut = create_schema(
@@ -46,20 +47,20 @@ UserOut = create_schema(
 @ninja_api.get("/entry_table_def")
 def entry_schema(request):
     model = EntryOut.schema()
-    fields_to_names = {field: meta['title'] for field, meta in model['properties'].items()}
-    return fields_to_names
+    columns = {field: meta['title'] for field, meta in model['properties'].items()}
+    return columns
 
 @ninja_api.get("/entries", response=Entries)
 def entries(request):
     model = EntryOut.schema()
-    # fields_to_names = {field: meta['title'] for field, meta in model['properties'].items()}
+    # columns = {field: meta['title'] for field, meta in model['properties'].items()}
     columns = []
     for field, meta in model['properties'].items():
         columns.append({'Header': meta['title'], 'accessor': field})
     entries = Entries(
         entries=list(Entry.objects.order_by('-id')),
-        # fields_to_names=fields_to_names
-        fields_to_names=columns
+        columns=columns,
+        entry_form_fields=EntryIn.schema()['properties'].items()
     )
     return entries
 

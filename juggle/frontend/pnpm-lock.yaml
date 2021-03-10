@@ -1,4 +1,5 @@
 dependencies:
+  bonsai.css: 1.2.2
   bootstrap: 4.6.0
   css-loader: 5.1.1_webpack@5.24.4
   pnpm: 5.18.5
@@ -1282,6 +1283,10 @@ packages:
   /big.js/5.2.2:
     resolution:
       integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+  /bonsai.css/1.2.2:
+    dev: false
+    resolution:
+      integrity: sha512-Mw4avkirvUkElE1i+OgRMB6vPm8jSDbo3pTItQRjgMURIajyMPWGy6QOYiGd9KUNQ1QGYyr9e8OizA2tlvSzlQ==
   /bootstrap/4.6.0:
     dev: false
     peerDependencies:
@@ -2709,6 +2714,7 @@ specifiers:
   '@babel/preset-env': ^7.13.9
   '@babel/preset-react': ^7.12.13
   babel-loader: ^8.2.2
+  bonsai.css: ^1.2.2
   bootstrap: ^4.6.0
   css-loader: ^5.1.1
   pnpm: ^5.18.5
