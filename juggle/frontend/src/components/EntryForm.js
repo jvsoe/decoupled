@@ -49,7 +49,8 @@ class EntryForm extends Component {
                     type={this.inputType(meta.type)}
                     name={field}
                     id={field+'ID'}
-                    placeholder={meta.title}
+                    placeholder={inModal ? this.props.state.selectedEntry[field] : `Enter ${meta.title}...`}
+                    defaultValue={inModal ? this.props.state.selectedEntry[field] : ''}
                     required
                     />
                 </Col>
