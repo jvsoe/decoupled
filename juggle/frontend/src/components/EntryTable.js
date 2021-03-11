@@ -32,13 +32,11 @@ class EntryTable extends Component {
   toggle = () => this.props.setAppState({modal: !this.props.state.modal});
   onRowClick = (event, { rowData, rowIndex, tableData }) => {
     // The following results should be identical
-    console.log(rowData, tableData[rowIndex])
     this.props.setAppState({selectedEntry: rowData})
     this.toggle()
   }
 
   render = () => {
-    console.log('this.props.state.entries', this.props.state.entries)
     return (
       <div>
         <EntryForm

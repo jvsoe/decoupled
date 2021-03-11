@@ -22,16 +22,28 @@ class EntryForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     let form = event.target
-    helpers.sendEntryRequest(form, 'POST');
-    this.props.fetchEntries();
+    let postFunctions = [this.props.fetchEntries]
+    helpers.sendEntryRequest(form, 'POST', postFunctions);
+  }
+
+  inModal = () => {
+    return this.props.formId.includes('modal')
+  }
+
+  valuesForEntryInput = (field, meta) => {
+    let placeholder = `Enter ${meta.title.toLowerCase()}...`
+    let defaultValue = ''
+    if (this.inModal()) {
+      placeholder = this.props.state.selectedEntry[field]
+      defaultValue = this.props.state.selectedEntry[field]
+    }
+    return {placeholder: placeholder, defaultValue: defaultValue}
   }
 
   render() {
-    const inModal = this.props.formId.includes('modal')
     const idInput = <Input type="hidden" name="id" value={this.props.state.selectedEntry.id || ''} />
-    const idFieldOrNot = inModal ? idInput : '';
-    const buttonOrNot = inModal ? '' : <Button>Submit</Button>;
-    console.log(this.props.formId, inModal, idInput, idFieldOrNot, buttonOrNot)
+    const idFieldOrNot = this.inModal() ? idInput : '';
+    const buttonOrNot = this.inModal() ? '' : <Button>Submit</Button>;
     return (
       <div className="entry-form-wrap">
         <Form
@@ -49,8 +61,7 @@ class EntryForm extends Component {
                     type={this.inputType(meta.type)}
                     name={field}
                     id={field+'ID'}
-                    placeholder={inModal ? this.props.state.selectedEntry[field] : `Enter ${meta.title}...`}
-                    defaultValue={inModal ? this.props.state.selectedEntry[field] : ''}
+                    {...this.valuesForEntryInput(field, meta)}
                     required
                     />
                 </Col>

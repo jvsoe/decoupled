@@ -1,4 +1,4 @@
-const sendEntryRequest = (formElement, method) => {
+const sendEntryRequest = (formElement, method, postFunctions) => {
   let formInputs = Array.from(formElement.getElementsByTagName('input'))
   let data = Object.fromEntries(formInputs.map(entry => [entry.name, entry.value]))
   let url = 'api/entries'
@@ -14,6 +14,12 @@ const sendEntryRequest = (formElement, method) => {
     return response.json()
   }).then(data => {
     console.log('data:', data);
+    if (!postFunctions) {
+      return
+    }
+    postFunctions.forEach(func => {
+      func();
+    })
   })
 }
 

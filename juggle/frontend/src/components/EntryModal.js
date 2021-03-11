@@ -19,9 +19,11 @@ class EntryModal extends Component {
       }
     }
     // Send request and refresh table
-    helpers.sendEntryRequest(formElement, method);
-    this.props.fetchEntries();
-    this.props.toggle();
+    let postFunctions = [
+      this.props.fetchEntries,
+      this.props.toggle,
+    ]
+    helpers.sendEntryRequest(formElement, method, postFunctions);
   }
 
   submitUpdate = () => {
