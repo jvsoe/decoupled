@@ -123,5 +123,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontepic' / 'svelte_app' / 'public' / 'build'
+]
+
 import django_heroku
 django_heroku.settings(locals())
