@@ -6,18 +6,9 @@ import {
   Modal, ModalBody, ModalFooter, ModalHeader
   } from 'reactstrap';
 
+import helpers from '../utils.js'
 
 class EntryForm extends Component {
-  state ={
-    modal: false
-  }
-  setModal = (setting) => {
-    this.setState({modal: setting})
-  }
-  // const [modal, setModal] = useState(false);
-
-  toggle = () => setModal(!this.state.modal);
-
   inputType = (field_type) => {
     let test = {
       "string": "text",
@@ -31,26 +22,24 @@ class EntryForm extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     let form = event.target
-    let formInputs = Array.from(form.getElementsByTagName('input'))
-    let data = Object.fromEntries(formInputs.map(entry => [entry.name, entry.value]))
-    fetch('api/entries', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => {
-      return response.json()
-    }).then(data => {
-      console.log('data:', data);
-      this.props.submitFunc();
-    })
+    helpers.sendEntryRequest(form, 'POST');
+    this.props.fetchEntries();
   }
 
   render() {
+    const inModal = this.props.formId.includes('modal')
+    const idInput = <Input type="hidden" name="id" value={this.props.state.selectedEntry.id || ''} />
+    const idFieldOrNot = inModal ? idInput : '';
+    const buttonOrNot = inModal ? '' : <Button>Submit</Button>;
+    console.log(this.props.formId, inModal, idInput, idFieldOrNot, buttonOrNot)
     return (
-      <div className="form-and-modal">
-        <Form id={this.props.settings.entryFormId} onSubmit={this.handleSubmit}>
+      <div className="entry-form-wrap">
+        <Form
+          id={this.props.formId}
+          onSubmit={this.handleSubmit}
+          className="entry-form">
+
+          {idFieldOrNot}
           {Object.entries(this.props.state.entryFormDefinition).map(([field, meta], index) => {
             return (
               <FormGroup key={field}>
@@ -60,25 +49,15 @@ class EntryForm extends Component {
                     type={this.inputType(meta.type)}
                     name={field}
                     id={field+'ID'}
-                    placeholder={meta.title} />
+                    placeholder={meta.title}
+                    required
+                    />
                 </Col>
               </FormGroup>
             )
           })}
-        <Button>Submit</Button>
+        {buttonOrNot}
         </Form>
-        {true &&
-          <Modal isOpen={this.state.modal} toggle={this.toggle} className="entry-modal">
-            <ModalHeader toggle={this.state.toggle}>Entry 101</ModalHeader>
-            <ModalBody>
-              Change or delete entry.
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={this.state.toggle}>Update</Button>
-              <Button color="danger" onClick={this.state.toggle}>Delete</Button>
-            </ModalFooter>
-          </Modal>
-        }
       </div>
     )
   }

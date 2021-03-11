@@ -3,6 +3,7 @@ import { Button } from 'reactstrap';
 import SmartDataTable from 'react-smart-data-table'
 
 import EntryForm from './EntryForm.js'
+import EntryModal from './EntryModal.js'
 
 
 class EntryTable extends Component {
@@ -28,31 +29,39 @@ class EntryTable extends Component {
   componentDidMount = () => {
     this.fetchEntries();
   }
-
-//  const onRowClick = (event, { rowData, rowIndex, tableData }) => {
-//    // The following results should be identical
-//    console.log(rowData, tableData[rowIndex])
-//  }
+  toggle = () => this.props.setAppState({modal: !this.props.state.modal});
+  onRowClick = (event, { rowData, rowIndex, tableData }) => {
+    // The following results should be identical
+    console.log(rowData, tableData[rowIndex])
+    this.props.setAppState({selectedEntry: rowData})
+    this.toggle()
+  }
 
   render = () => {
     console.log('this.props.state.entries', this.props.state.entries)
     return (
       <div>
-        <div className="form-wrap">
-          <EntryForm
-            state={this.props.state}
-            submitFunc={this.fetchEntries}
-            setAppState={this.props.setAppState}
-            settings={this.props.settings} />
-        </div>
+        <EntryForm
+          state={this.props.state}
+          setAppState={this.props.setAppState}
+          formId={this.props.settings.entryFormId}
+          fetchEntries={this.fetchEntries} />
+
+        <EntryModal
+          state={this.props.state}
+          toggle={this.toggle}
+          fetchEntries={this.fetchEntries}
+          formId={this.props.settings.entryModalFormId} />
+
         <br></br>
         <div className="the-table">
           <SmartDataTable
             data={this.props.state.entries}
             name="test-table"
             className="ui compact selectable table"
-            {...this.props.state.tableParams}
+            onRowClick={this.onRowClick}
             sortable
+            {...this.props.state.tableParams}
           />
         </div>
         <Button color="danger" onClick={this.fetchEntries}>Refresh!</Button>

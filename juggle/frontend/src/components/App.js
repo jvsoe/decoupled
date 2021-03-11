@@ -8,16 +8,19 @@ import EntryForm from './EntryForm.js';
 
 class App extends Component {
   state = {
+    selectedEntry: {},
     entries: [],
     entryFormData: {},
     entryDefinition: [], // Columns - not used
     entryFormDefinition: {},
+    modal: false,
     tableParams: {},
     loaded: false,
     placeholder: "Loading"
   };
   settings = {
     entryFormId: 'entry-form',
+    entryModalFormId: 'entry-modal-form',
   }
 
 //  appControl = () => {
